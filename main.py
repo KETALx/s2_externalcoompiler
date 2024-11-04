@@ -6,18 +6,20 @@ from PyQt6.QtGui import QIcon, QWindow
 
 from ui import s2ec
 
-class settingsGUI(QWidget):
-    def __init__(self):
-        super(settingsGUI,self).__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel("Another Window")
-        layout.addWidget(self.label)
-        self.setLayout(layout)
 
 class toolGUI(QMainWindow):
 
     def __init__(self):
         super(toolGUI,self).__init__()
+
+        self.ui = s2ec.Ui_MainWindow()
+        self.ui.setupUi(self)
+
+        self.ui.LoadVmap.clicked.connect(self.OpenFileDialog)
+        self.ui.LoadVmap.setIcon(QIcon('icons/edit_in_place.png'))
+
+
+        global map_file_path
 
 
     def OpenFileDialog(self):
@@ -26,24 +28,26 @@ class toolGUI(QMainWindow):
             "",
             "Source 2 map files (*.vmap);; All Files (*)",
         )
-        map_file_path = mapfilename
+        map_file_path = mapfilename[0]
+        self.ui.TextMapFilename.setPlainText(map_file_path)
+        print(map_file_path)
 
 
     def OpenPathPreferences(self):
-        pass
+        print("pref")
 
 
     def compileMap(self):
         print('compile')
 
 def main():
-    ui = s2ec.Ui_MainWindow()
 
     app = QApplication([])
     window = toolGUI()
 
-    ui.setupUi(window)
     window.show()
+
+
 
     app.exec()
 
