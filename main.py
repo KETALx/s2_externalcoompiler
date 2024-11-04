@@ -2,18 +2,23 @@ from fileinput import filename
 
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QWindow
 
+from ui import s2ec
+
+class settingsGUI(QWidget):
+    def __init__(self):
+        super(settingsGUI,self).__init__()
+        layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 class toolGUI(QMainWindow):
+
     def __init__(self):
         super(toolGUI,self).__init__()
-        uic.loadUi("ui/s2ec.ui",self)
-        self.show()
-        #self.setFixedSize(1000,800)
-        self.setWindowIcon(QIcon("icons/run_map.png"))
-        self.pushButtonCompile.clicked.connect(self.compileMap)
-        self.actionLoad_map.triggered.connect(self.OpenFileDialog)
+
 
     def OpenFileDialog(self):
         mapfilename = QFileDialog.getOpenFileName(self,
@@ -21,14 +26,24 @@ class toolGUI(QMainWindow):
             "",
             "Source 2 map files (*.vmap);; All Files (*)",
         )
-        print(mapfilename)
+        map_file_path = mapfilename
+
+
+    def OpenPathPreferences(self):
+        pass
+
 
     def compileMap(self):
         print('compile')
 
 def main():
+    ui = s2ec.Ui_MainWindow()
+
     app = QApplication([])
     window = toolGUI()
+
+    ui.setupUi(window)
+    window.show()
 
     app.exec()
 
