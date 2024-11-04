@@ -1,8 +1,9 @@
 import threading
 from fileinput import filename
 from os import cpu_count
+from subprocess import check_output
 
-
+from PyQt6.QtCore import QProcess
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon, QWindow
@@ -13,6 +14,7 @@ from ui import s2ec
 
 import os
 import json
+import subprocess
 
 
 class toolGUI(QMainWindow):
@@ -48,7 +50,8 @@ class toolGUI(QMainWindow):
         self.LoadFromJson()
         if self.UserSettings["CompilerPath"] is not None:
             self.ui.ResourceCompilerText.setPlainText(self.UserSettings["CompilerPath"])
-            print("COMPILED")
+
+
 
 
     def GetOutputDirectory(self):
@@ -80,10 +83,20 @@ class toolGUI(QMainWindow):
         #self.WriteJson(lightres=self.ui.comboLightRes.currentText())
 
     def CompileMap(self):
-        if self.resource_compiler_path is None:
-            print("empty")
-        else:
-            compile_params = self.resource_compiler_path
+        compile_params = ''
+        #compile_params += f'"{self.UserSettings["CompilerPath"]}"'
+        #compile_params = ' -threads 7 -fshallow -maxtextureres 256 -quiet -html -unbufferedio -i "d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap"  -noassert  -world -nosettle -nolightmaps -retail  -breakpad  -nop4 -outroot "C:\\\\Users\\\\kirill\\\\AppData\\\\Local\\\\Temp\\\\valve\\\\hammermapbuild\\\\game"'
+        print(self.UserSettings["CompilerPath"])
+
+        self.process = QProcess(self)
+        self.process.start(self.UserSettings["CompilerPath"], ["-i", "d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap"])
+        self.process.waitForFinished()
+        self.log = self.process.readAllStandardOutput()
+        self.stdout = bytes(self.log).decode("utf8")
+        print(self.process.arguments())
+        self.ui.textCompileOutput.append(self.stdout)
+
+
 
     def WriteJson(self,comp_path = "", lightres=2048):
         self.UserSettings = {

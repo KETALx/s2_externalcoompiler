@@ -374,15 +374,12 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QPlainTextEdit" name="plainTextEdit_4">
+             <widget class="QTextBrowser" name="textCompileOutput">
               <property name="minimumSize">
                <size>
                 <width>0</width>
                 <height>350</height>
                </size>
-              </property>
-              <property name="plainText">
-               <string>Output log</string>
               </property>
              </widget>
             </item>
