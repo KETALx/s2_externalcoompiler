@@ -2,16 +2,17 @@ import threading
 from fileinput import filename
 from os import cpu_count
 
+
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon, QWindow
 
-from pyqt6_plugins.examplebuttonplugin import QtGui
+
 
 from ui import s2ec
 
 import os
-
+import json
 
 
 class toolGUI(QMainWindow):
@@ -30,6 +31,8 @@ class toolGUI(QMainWindow):
 
         self.ui.pushButtonCompile.clicked.connect(self.CompileMap)
 
+        self.ui.comboLightRes.currentTextChanged.connect(self.ChangeLightRes)
+
         self.map_file_path = None
         self.vpk_output_folder = None
         self.resource_compiler_path = None
@@ -40,6 +43,11 @@ class toolGUI(QMainWindow):
         self.ui.cpu_threads_count.setMaximum(self.MAX_CPU_THREADS)
         self.ui.audio_threads_count.setValue(self.MAX_CPU_THREADS - 1)
         self.ui.audio_threads_count.setMaximum(self.MAX_CPU_THREADS)
+
+        self.UserSettings = {}
+        self.LoadFromJson()
+
+
 
     def GetOutputDirectory(self):
         self.vpk_output_folder = QFileDialog.getExistingDirectory(self, "Compiler")
@@ -52,6 +60,8 @@ class toolGUI(QMainWindow):
             "Compiler executable (*.exe)",
         )[0]
         self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
+        self.WriteJson(comp_path=self.resource_compiler_path)
+
 
     def OpenMapFileDialog(self):
         self.map_file_path = QFileDialog.getOpenFileName(self,
@@ -61,6 +71,9 @@ class toolGUI(QMainWindow):
         )[0]
         self.ui.TextMapFilename.setPlainText(self.map_file_path)
 
+    def ChangeLightRes(self):
+        print(self.ui.comboLightRes.currentText())
+        #self.WriteJson(lightres=self.ui.comboLightRes.currentText())
 
     def CompileMap(self):
         if self.resource_compiler_path is None:
@@ -68,6 +81,25 @@ class toolGUI(QMainWindow):
         else:
             compile_params = self.resource_compiler_path
 
+    def WriteJson(self,comp_path = "", lightres=2048):
+        self.UserSettings = {
+            "CompilerPath" : comp_path,
+            "LightRes" : lightres
+        }
+
+        with open("user_settings.json", "w") as self.outfile:
+            json.dump(self.UserSettings, self.outfile, ensure_ascii=False,indent=4)
+
+    def LoadFromJson(self):
+        self.UserSettings = {
+            "CompilerPath" : "THIS IS A TSET",
+            "LightRes" : ""
+        }
+
+        with open('user_settings.json', 'r') as file:
+            data = json.load(file)
+
+        self.UserSettings = data
 
 def main():
 
