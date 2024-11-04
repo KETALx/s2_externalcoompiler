@@ -30,20 +30,20 @@ class toolGUI(QMainWindow):
 
         self.ui.pushButtonCompile.clicked.connect(self.CompileMap)
 
-        global map_file_path
-        global vpk_output_folder
-        resource_compiler_path = 'empty'
+        self.map_file_path = None
+        self.vpk_output_folder = None
+        self.resource_compiler_path = None
 
-        global MAX_CPU_THREADS
-        MAX_CPU_THREADS = os.cpu_count()
-        self.ui.cpu_threads_count.setValue(MAX_CPU_THREADS - 1)
-        self.ui.cpu_threads_count.setMaximum(MAX_CPU_THREADS)
-        self.ui.audio_threads_count.setValue(MAX_CPU_THREADS - 1)
-        self.ui.audio_threads_count.setMaximum(MAX_CPU_THREADS)
+
+        self.MAX_CPU_THREADS = os.cpu_count()
+        self.ui.cpu_threads_count.setValue(self.MAX_CPU_THREADS - 1)
+        self.ui.cpu_threads_count.setMaximum(self.MAX_CPU_THREADS)
+        self.ui.audio_threads_count.setValue(self.MAX_CPU_THREADS - 1)
+        self.ui.audio_threads_count.setMaximum(self.MAX_CPU_THREADS)
 
     def GetOutputDirectory(self):
-        vpk_output_folder = QFileDialog.getExistingDirectory(self, "Compiler")
-        self.ui.VpkOutputText.setPlainText(vpk_output_folder)
+        self.vpk_output_folder = QFileDialog.getExistingDirectory(self, "Compiler")
+        self.ui.VpkOutputText.setPlainText(self.vpk_output_folder)
 
     def GetResourceCompiler(self):
         self.resource_compiler_path = QFileDialog.getOpenFileName(self,
@@ -54,17 +54,19 @@ class toolGUI(QMainWindow):
         self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
 
     def OpenMapFileDialog(self):
-        mapfilename = QFileDialog.getOpenFileName(self,
+        self.map_file_path = QFileDialog.getOpenFileName(self,
             "Open map file",
             "",
             "Source 2 map files (*.vmap);; All Files (*)",
-        )
-        map_file_path = mapfilename[0]
-        self.ui.TextMapFilename.setPlainText(map_file_path)
+        )[0]
+        self.ui.TextMapFilename.setPlainText(self.map_file_path)
 
 
     def CompileMap(self):
-        print(resource_compiler_path)
+        if self.resource_compiler_path is None:
+            print("empty")
+        else:
+            compile_params = self.resource_compiler_path
 
 
 def main():
