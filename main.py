@@ -28,9 +28,11 @@ class toolGUI(QMainWindow):
         self.ui.buttonLoadCompilerPath.clicked.connect(self.GetResourceCompiler)
         self.ui.buttonLoadVpkOutputPath.clicked.connect(self.GetOutputDirectory)
 
+        self.ui.pushButtonCompile.clicked.connect(self.CompileMap)
+
         global map_file_path
         global vpk_output_folder
-        global ResourceCompilerPath
+        resource_compiler_path = 'empty'
 
         global MAX_CPU_THREADS
         MAX_CPU_THREADS = os.cpu_count()
@@ -44,13 +46,12 @@ class toolGUI(QMainWindow):
         self.ui.VpkOutputText.setPlainText(vpk_output_folder)
 
     def GetResourceCompiler(self):
-        ResourceCompilerPath = QFileDialog.getOpenFileName(self,
+        self.resource_compiler_path = QFileDialog.getOpenFileName(self,
             "Open resource compiler",
             "",
             "Compiler executable (*.exe)",
         )[0]
-        print(ResourceCompilerPath)
-        self.ui.ResourceCompilerText.setPlainText(ResourceCompilerPath)
+        self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
 
     def OpenMapFileDialog(self):
         mapfilename = QFileDialog.getOpenFileName(self,
@@ -60,15 +61,11 @@ class toolGUI(QMainWindow):
         )
         map_file_path = mapfilename[0]
         self.ui.TextMapFilename.setPlainText(map_file_path)
-        print(map_file_path)
 
 
-    def OpenPathPreferences(self):
-        print("pref")
+    def CompileMap(self):
+        print(resource_compiler_path)
 
-
-    def compileMap(self):
-        print('compile')
 
 def main():
 
@@ -76,11 +73,7 @@ def main():
     window = toolGUI()
 
     window.show()
-
-
-
     app.exec()
-
 
 if __name__ == '__main__':
     main()

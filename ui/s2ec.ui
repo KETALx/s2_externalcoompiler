@@ -452,10 +452,9 @@
          </layout>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="plainTextEdit_3">
+         <widget class="QPlainTextEdit" name="CompileParamsText">
           <property name="plainText">
-           <string>Compile parametrs
-&quot;D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\resourcecompiler.exe&quot; -threads 7 -fshallow -maxtextureres 256 -quiet -html -unbufferedio -i &quot;d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap&quot;  -noassert  -world -nosettle -nolightmaps -retail  -breakpad  -nop4 -outroot &quot;C:\Users\kirill\AppData\Local\Temp\valve\hammermapbuild\game&quot;</string>
+           <string>&quot;D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\resourcecompiler.exe&quot; -threads 7 -fshallow -maxtextureres 256 -quiet -html -unbufferedio -i &quot;d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap&quot;  -noassert  -world -nosettle -nolightmaps -retail  -breakpad  -nop4 -outroot &quot;C:\Users\kirill\AppData\Local\Temp\valve\hammermapbuild\game&quot;</string>
           </property>
          </widget>
         </item>
