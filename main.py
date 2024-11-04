@@ -46,7 +46,9 @@ class toolGUI(QMainWindow):
 
         self.UserSettings = {}
         self.LoadFromJson()
-
+        if self.UserSettings["CompilerPath"] is not None:
+            self.ui.ResourceCompilerText.setPlainText(self.UserSettings["CompilerPath"])
+            print("COMPILED")
 
 
     def GetOutputDirectory(self):
@@ -59,8 +61,10 @@ class toolGUI(QMainWindow):
             "",
             "Compiler executable (*.exe)",
         )[0]
-        self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
-        self.WriteJson(comp_path=self.resource_compiler_path)
+
+        if self.resource_compiler_path != "":
+            self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
+            self.WriteJson(comp_path=self.resource_compiler_path)
 
 
     def OpenMapFileDialog(self):
@@ -91,15 +95,12 @@ class toolGUI(QMainWindow):
             json.dump(self.UserSettings, self.outfile, ensure_ascii=False,indent=4)
 
     def LoadFromJson(self):
-        self.UserSettings = {
-            "CompilerPath" : "THIS IS A TSET",
-            "LightRes" : ""
-        }
 
         with open('user_settings.json', 'r') as file:
             data = json.load(file)
 
         self.UserSettings = data
+
 
 def main():
 
