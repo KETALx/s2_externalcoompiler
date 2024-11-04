@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="icon_vmap">
+    <file>edit_in_place.png</file>
+  </qresource>
+  <qresource prefix="icon_compile">
+    <file>appicon.ico</file>
+  </qresource>
+</RCC>
