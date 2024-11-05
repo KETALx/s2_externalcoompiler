@@ -7,8 +7,7 @@ from PyQt6.QtCore import QProcess
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon, QWindow
-
-
+from pyqt6_plugins.examplebutton import QtWidgets
 
 from ui import s2ec
 
@@ -21,6 +20,8 @@ class toolGUI(QMainWindow):
 
     def __init__(self):
         super(toolGUI,self).__init__()
+
+
 
         self.ui = s2ec.Ui_MainWindow()
         self.ui.setupUi(self)
@@ -46,10 +47,6 @@ class toolGUI(QMainWindow):
         self.ui.audio_threads_count.setValue(self.MAX_CPU_THREADS - 1)
         self.ui.audio_threads_count.setMaximum(self.MAX_CPU_THREADS)
 
-        self.UserSettings = {}
-        self.LoadFromJson()
-        if self.UserSettings["CompilerPath"] is not None:
-            self.ui.ResourceCompilerText.setPlainText(self.UserSettings["CompilerPath"])
 
 
 
@@ -57,6 +54,7 @@ class toolGUI(QMainWindow):
     def GetOutputDirectory(self):
         self.vpk_output_folder = QFileDialog.getExistingDirectory(self, "Compiler")
         self.ui.VpkOutputText.setPlainText(self.vpk_output_folder)
+
 
     def GetResourceCompiler(self):
         self.resource_compiler_path = QFileDialog.getOpenFileName(self,
@@ -66,8 +64,9 @@ class toolGUI(QMainWindow):
         )[0]
 
         if self.resource_compiler_path != "":
+            print("FOUND")
             self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
-            self.WriteJson(comp_path=self.resource_compiler_path)
+
 
 
     def OpenMapFileDialog(self):
@@ -80,16 +79,24 @@ class toolGUI(QMainWindow):
 
     def ChangeLightRes(self):
         print(self.ui.comboLightRes.currentText())
-        #self.WriteJson(lightres=self.ui.comboLightRes.currentText())
+
 
     def CompileMap(self):
-        compile_params = ''
-        #compile_params += f'"{self.UserSettings["CompilerPath"]}"'
-        #compile_params = ' -threads 7 -fshallow -maxtextureres 256 -quiet -html -unbufferedio -i "d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap"  -noassert  -world -nosettle -nolightmaps -retail  -breakpad  -nop4 -outroot "C:\\\\Users\\\\kirill\\\\AppData\\\\Local\\\\Temp\\\\valve\\\\hammermapbuild\\\\game"'
-        print(self.UserSettings["CompilerPath"])
+
+        if self.resource_compiler_path is None or not str(self.resource_compiler_path).endswith("resourcecompiler.exe"):
+            self.ShowErrorMessage("compiler not found, configure in path settings")
+            return
+
+        if self.vpk_output_folder is None:
+            print("TEST")
+            self.ShowErrorMessage("Output folder not found")
+            return
+
 
         self.process = QProcess(self)
-        self.process.start(self.UserSettings["CompilerPath"], ["-i", "d:/steamlibrary/steamapps/common/counter-strike global offensive/content/csgo_addons/sfmtest/maps/sfmtest.vmap"])
+        self.process.start(self.resource_compiler_path, ["-i",self.map_file_path,
+        "-outroot", self.vpk_output_folder,
+        "-html"])
         self.process.waitForFinished()
         self.log = self.process.readAllStandardOutput()
         self.stdout = bytes(self.log).decode("utf8")
@@ -97,28 +104,23 @@ class toolGUI(QMainWindow):
         self.ui.textCompileOutput.append(self.stdout)
 
 
+    def ShowErrorMessage(self, error = ""):
+        cMessageBox = QMessageBox()
+        cMessageBox.setWindowTitle("Error")
+        cMessageBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+        cMessageBox.setText(error)
+        cMessageBox.exec()
 
-    def WriteJson(self,comp_path = "", lightres=2048):
-        self.UserSettings = {
-            "CompilerPath" : comp_path,
-            "LightRes" : lightres
-        }
 
-        with open("user_settings.json", "w") as self.outfile:
-            json.dump(self.UserSettings, self.outfile, ensure_ascii=False,indent=4)
 
-    def LoadFromJson(self):
 
-        with open('user_settings.json', 'r') as file:
-            data = json.load(file)
-
-        self.UserSettings = data
 
 
 def main():
 
     app = QApplication([])
     window = toolGUI()
+
 
     window.show()
     app.exec()
