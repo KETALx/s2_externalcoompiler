@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>882</height>
+    <height>887</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="CompileSettings">
        <attribute name="title">
@@ -702,7 +702,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pushButtonCancelCompile">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -778,7 +778,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <x>10</x>
           <y>20</y>
           <width>811</width>
-          <height>51</height>
+          <height>95</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">

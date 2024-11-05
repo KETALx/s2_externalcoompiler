@@ -33,6 +33,7 @@ class toolGUI(QMainWindow):
         self.ui.buttonLoadVpkOutputPath.clicked.connect(self.GetOutputDirectory)
 
         self.ui.pushButtonCompile.clicked.connect(self.CompileMap)
+        self.ui.pushButtonCancelCompile.clicked.connect(self.CancelCompile)
 
         self.ui.comboLightRes.currentTextChanged.connect(self.ChangeLightRes)
 
@@ -52,7 +53,7 @@ class toolGUI(QMainWindow):
         self.ui.audio_threads_count.setValue(self.MAX_CPU_THREADS - 1)
         self.ui.audio_threads_count.setMaximum(self.MAX_CPU_THREADS)
 
-
+        self.process = QProcess()
 
 
 
@@ -128,6 +129,12 @@ class toolGUI(QMainWindow):
         self.log = self.process.readAllStandardOutput()
         self.stdout = bytes(self.log).decode("utf8")
         self.ui.textCompileOutput.append(self.stdout)
+
+    def CancelCompile(self):
+        if self.process.processId() > 0:
+            print("terminated")
+            self.process.kill()
+            self.ui.textCompileOutput.append("Compile canceled")
 
 
     def ShowErrorMessage(self, error = ""):
