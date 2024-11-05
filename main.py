@@ -38,7 +38,12 @@ class toolGUI(QMainWindow):
 
         self.map_file_path = None
         self.vpk_output_folder = None
-        self.resource_compiler_path = None
+        self.resource_compiler_path = "D:\\SteamLibrary\\steamapps\\common\\Counter-Strike Global Offensive\\game\\bin\\win64\\resourcecompiler.exe"
+
+        self.flags_world_buildworld = True
+        self.flags_world_entsonly = False
+        self.flags_world_presettlephys = False
+
 
 
         self.MAX_CPU_THREADS = os.cpu_count()
@@ -46,6 +51,7 @@ class toolGUI(QMainWindow):
         self.ui.cpu_threads_count.setMaximum(self.MAX_CPU_THREADS)
         self.ui.audio_threads_count.setValue(self.MAX_CPU_THREADS - 1)
         self.ui.audio_threads_count.setMaximum(self.MAX_CPU_THREADS)
+
 
 
 
@@ -92,17 +98,30 @@ class toolGUI(QMainWindow):
             self.ShowErrorMessage("Output folder not found")
             return
 
+        if self.ui.bBuildWorld.isChecked():
+            Buildworld = "-fshallow", "-maxtextureres", "256", "-quiet", "-unbufferedio", "-noassert", "-world", "-retail",  "-breakpad",  "-nop4"
+            strBuildWorld = ', '.join(Buildworld)
+        else:
+            strBuildWorld = ''
+
+        print(strBuildWorld)
 
         self.process = QProcess(self)
         self.process.start(self.resource_compiler_path, ["-i",self.map_file_path,
         "-outroot", self.vpk_output_folder,
-        "-html"])
-        self.process.waitForFinished()
+        "-html",
+        "-threads", str(self.ui.cpu_threads_count.value()),
+        strBuildWorld,
+        ])
+        print(self.process.arguments())
+        self.process.finished.connect(self.clog)
+
+
+    def clog(self):
         self.log = self.process.readAllStandardOutput()
         self.stdout = bytes(self.log).decode("utf8")
         print(self.process.arguments())
         self.ui.textCompileOutput.append(self.stdout)
-
 
     def ShowErrorMessage(self, error = ""):
         cMessageBox = QMessageBox()
