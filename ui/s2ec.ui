@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>849</height>
+    <height>882</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="CompileSettings">
        <attribute name="title">
@@ -598,7 +598,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>35</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="font">
@@ -628,7 +628,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <property name="maximumSize">
                  <size>
                   <width>200</width>
-                  <height>35</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="font">
@@ -718,7 +718,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>25</height>
+              <height>50</height>
              </size>
             </property>
             <property name="font">
@@ -778,7 +778,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <x>10</x>
           <y>20</y>
           <width>811</width>
-          <height>396</height>
+          <height>51</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">

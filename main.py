@@ -3,10 +3,11 @@ from fileinput import filename
 from os import cpu_count
 from subprocess import check_output
 
-from PyQt6.QtCore import QProcess
+from PyQt6.QtCore import QProcess, QTimer
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon, QWindow
+from pyqt6_plugins.examplebutton import QtWidgets
 
 from ui import s2ec
 
@@ -97,6 +98,8 @@ class toolGUI(QMainWindow):
             self.ShowErrorMessage("Output folder not found")
             return
 
+        self.ui.pushButtonCompile.setEnabled(False)
+
         if self.ui.bBuildWorld.isChecked():
             Buildworld = "-fshallow", "-maxtextureres", "256", "-quiet", "-unbufferedio", "-noassert", "-world", "-retail",  "-breakpad",  "-nop4"
             strBuildWorld = ', '.join(Buildworld)
@@ -113,14 +116,19 @@ class toolGUI(QMainWindow):
         strBuildWorld,
         ])
         print(self.process.arguments())
-        self.process.finished.connect(self.clog)
+        self.process.readyReadStandardOutput.connect(self.clog)
+        self.process.finished.connect(self.elog)
 
+
+    def elog(self):
+        print("Finished compile")
+        self.ui.pushButtonCompile.setEnabled(True)
 
     def clog(self):
         self.log = self.process.readAllStandardOutput()
         self.stdout = bytes(self.log).decode("utf8")
-        print(self.process.arguments())
         self.ui.textCompileOutput.append(self.stdout)
+
 
     def ShowErrorMessage(self, error = ""):
         cMessageBox = QMessageBox()

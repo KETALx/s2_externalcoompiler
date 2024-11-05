@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 849)
+        MainWindow.resize(1000, 882)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -269,7 +269,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.TextMapFilename.sizePolicy().hasHeightForWidth())
         self.TextMapFilename.setSizePolicy(sizePolicy)
-        self.TextMapFilename.setMaximumSize(QtCore.QSize(16777215, 35))
+        self.TextMapFilename.setMaximumSize(QtCore.QSize(16777215, 40))
         font = QtGui.QFont()
         font.setBold(False)
         self.TextMapFilename.setFont(font)
@@ -280,7 +280,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.addWidget(self.TextMapFilename)
         self.LoadVmap = QtWidgets.QPushButton(parent=self.CompileSettings)
         self.LoadVmap.setMinimumSize(QtCore.QSize(0, 25))
-        self.LoadVmap.setMaximumSize(QtCore.QSize(200, 35))
+        self.LoadVmap.setMaximumSize(QtCore.QSize(200, 40))
         font = QtGui.QFont()
         font.setBold(False)
         self.LoadVmap.setFont(font)
@@ -316,7 +316,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
         self.pushButton.setSizePolicy(sizePolicy)
         self.pushButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.pushButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.pushButton.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setBold(False)
         self.pushButton.setFont(font)
@@ -343,7 +343,7 @@ class Ui_MainWindow(object):
         self.PathSettings = QtWidgets.QWidget()
         self.PathSettings.setObjectName("PathSettings")
         self.gridLayoutWidget = QtWidgets.QWidget(parent=self.PathSettings)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 20, 811, 396))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 20, 811, 51))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -373,7 +373,7 @@ class Ui_MainWindow(object):
         self.actionPath_settings.setObjectName("actionPath_settings")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
