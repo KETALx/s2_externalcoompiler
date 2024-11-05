@@ -7,7 +7,6 @@ from PyQt6.QtCore import QProcess
 from PyQt6.QtWidgets import *
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon, QWindow
-from pyqt6_plugins.examplebutton import QtWidgets
 
 from ui import s2ec
 
