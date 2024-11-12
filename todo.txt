@@ -1,6 +1,4 @@
 -copy hammer ui theme
 -auto load compiler path
 -compiler params
--cancel button
--progress bar
--icons
+-icons	

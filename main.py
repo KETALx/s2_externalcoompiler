@@ -29,6 +29,7 @@ class toolGUI(QMainWindow):
         self.ui.LoadVmap.clicked.connect(self.OpenMapFileDialog)
         self.ui.LoadVmap.setIcon(QIcon('icons/edit_in_place.png'))
 
+        self.ui.buttonLoadCompilerPath.setToolTip("Game folder path, ex: C:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive")
         self.ui.buttonLoadCompilerPath.clicked.connect(self.GetResourceCompiler)
         self.ui.buttonLoadVpkOutputPath.clicked.connect(self.GetOutputDirectory)
 
@@ -39,7 +40,8 @@ class toolGUI(QMainWindow):
 
         self.map_file_path = None
         self.vpk_output_folder = None
-        self.resource_compiler_path = "D:\\SteamLibrary\\steamapps\\common\\Counter-Strike Global Offensive\\game\\bin\\win64\\resourcecompiler.exe"
+        self.resource_compiler_path = None
+        self.addonsfolder = ""
 
         self.flags_world_buildworld = True
         self.flags_world_entsonly = False
@@ -64,14 +66,14 @@ class toolGUI(QMainWindow):
 
 
     def GetResourceCompiler(self):
-        self.resource_compiler_path = QFileDialog.getOpenFileName(self,
-            "Open resource compiler",
-            "",
-            "Compiler executable (*.exe)",
-        )[0]
+        self.resource_compiler_path = QFileDialog.getExistingDirectory(self,
+            "Game folder path"
+        )
 
         if self.resource_compiler_path != "":
-            print("FOUND")
+            print(self.resource_compiler_path)
+            self.addonsfolder = self.resource_compiler_path
+            self.resource_compiler_path += "/game/bin/win64/resourcecompiler.exe"
             self.ui.ResourceCompilerText.setPlainText(self.resource_compiler_path)
 
 
@@ -79,7 +81,7 @@ class toolGUI(QMainWindow):
     def OpenMapFileDialog(self):
         self.map_file_path = QFileDialog.getOpenFileName(self,
             "Open map file",
-            "",
+            self.addonsfolder,
             "Source 2 map files (*.vmap);; All Files (*)",
         )[0]
         self.ui.TextMapFilename.setPlainText(self.map_file_path)
@@ -100,12 +102,19 @@ class toolGUI(QMainWindow):
             return
 
         self.ui.pushButtonCompile.setEnabled(False)
+        
 
         if self.ui.bBuildWorld.isChecked():
             Buildworld = "-fshallow", "-maxtextureres", "256", "-quiet", "-unbufferedio", "-noassert", "-world", "-retail",  "-breakpad",  "-nop4"
             strBuildWorld = ', '.join(Buildworld)
         else:
             strBuildWorld = ''
+
+        if self.ui.bEntsOnly.isChecked():
+            EntsOnly = "-fshallow", "-maxtextureres", "256", "-quiet", "-unbufferedio", "-noassert", "-world", "-retail",  "-breakpad",  "-nop4"
+            strEntsOnly = ', '.join(EntsOnly)
+        else:
+            strEntsOnly = ''
 
         print(strBuildWorld)
 
@@ -114,7 +123,7 @@ class toolGUI(QMainWindow):
         "-outroot", self.vpk_output_folder,
         "-html",
         "-threads", str(self.ui.cpu_threads_count.value()),
-        strBuildWorld,
+        strBuildWorld, strEntsOnly
         ])
         print(self.process.arguments())
         self.process.readyReadStandardOutput.connect(self.clog)
@@ -124,6 +133,7 @@ class toolGUI(QMainWindow):
     def elog(self):
         print("Finished compile")
         self.ui.pushButtonCompile.setEnabled(True)
+        
 
     def clog(self):
         self.log = self.process.readAllStandardOutput()
@@ -135,6 +145,7 @@ class toolGUI(QMainWindow):
             print("terminated")
             self.process.kill()
             self.ui.textCompileOutput.append("Compile canceled")
+            
 
 
     def ShowErrorMessage(self, error = ""):
@@ -157,6 +168,7 @@ def main():
 
     window.show()
     app.exec()
+
 
 if __name__ == '__main__':
     main()
